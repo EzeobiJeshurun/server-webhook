@@ -106,7 +106,7 @@ io.on('connection',(socket)=>{
         let ifUserHasEnteredDate = daysToBirthday.find(user => user.id == getUser.currentUser);   
         if(regYes.test(message)&& ifUserHasEnteredDate){
             io.to(getUser.messageRoom).emit('chats', {user: "chatbot", text: `There are ${ifUserHasEnteredDate.days} days left until your next birthday.`});
-            io.to(getUser.messageRoom).emit('chats',{user: "chatbot", text: "If you wish to know more, you can drop your email. I'll be in touch, bye."});
+            io.to(getUser.messageRoom).emit('chats',{user: "chatbot", text: "If you wish to know more, drop your email. I'll be in touch, bye."});
             
         }
 
