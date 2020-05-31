@@ -25,7 +25,7 @@ io.on('connection',(socket)=>{
        // }
 
        //chatbot welcome notes
-       socket.emit('chats', {user: 'chatbot', text: "Hi"}) 
+       socket.emit('chats', {user: 'chatbot', text: ":) Hi"}) 
        socket.emit('chats', {user: 'chatbot', text: "Please, what\'s your first name?"})
 
 //used to track when the question first name is asked
@@ -106,23 +106,25 @@ io.on('connection',(socket)=>{
         let ifUserHasEnteredDate = daysToBirthday.find(user => user.id == getUser.currentUser);   
         if(regYes.test(message)&& ifUserHasEnteredDate){
             io.to(getUser.messageRoom).emit('chats', {user: "chatbot", text: `There are ${ifUserHasEnteredDate.days} days left until your next birthday.`});
-            io.to(getUser.messageRoom).emit('chats',{user: "chatbot", text: "If you wish to know more, drop your email. I'll be in touch, bye."});
+            io.to(getUser.messageRoom).emit('chats',{user: "chatbot", text: "If you wish to know more, drop your email . I'll be in touch, Goodbye ."});
             
         }
 
         let regNo = /(no|nah)/i;
 
         if(regNo.test(message)){
-            io.to(getUser.messageRoom).emit('chats',{user: "chatbot", text: "Goodbye"})
+            io.to(getUser.messageRoom).emit('chats',{user: "chatbot", text: "Goodbye "})
         }
 
 
 
         if(!((regNo.test(message))||(regYes.test(message)&& ifUserHasEnteredDate)
         ||(!(mostRecentUser.FirstName === false) && regBirthday.test(message))
-        ||(mostRecentUser.FirstName === false) )){
+        || (mostRecentUser.FirstName === false) )){
 
-            io.to(getUser.messageRoom).emit('chats',{user: "chatbot", text: "Please, answer correctly so I can help you."})
+            if(ifUserHasEnteredDate){
+                io.to(getUser.messageRoom).emit('chats',{user: "chatbot", text: "Please, answer correctly so I can help you."});
+            }
         }
 
         callback();
@@ -131,7 +133,7 @@ io.on('connection',(socket)=>{
 
     //disconnect below fires when a users disconnects from the socket
     socket.on('disconnect',()=>{
-        console.log('someone just left');
+        const user = removeUser(socket.id);
     })
 })
 
